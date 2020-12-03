@@ -8,12 +8,12 @@ heroku plugins:install java         -> Aceasta comanda va instala pluginul afere
 heroku war:deploy <Path to your war file from the target folder and the name of the war file example at me is: C:\Users\Sorin\IdeaProjects\HEROKU_DEPLOY\target\HEROKU_DEPLOY.war> --<here you type the name of the app you created in heroku>
 Un exemplu concret a randului de mai sus este acesta(atentie la spatii si comenzi, trebuie sa fie corecte, path-ul complet si numele war-ului sa fie corect):
 heroku war:deploy C:\Users\sorin\IdeaProjects\HEROKU_DEPLOY\target\HEROKU_DEPLOY.war --app herokuappdeployed                ->hit enter
-Dupa toate acestea, aplicatia va fi deployata in Heroku. O putei accesa fie din url-ul generat in terminalul Intelij, fie din contul Heroku(browser), din butonul Open App.
+Dupa toate acestea, aplicatia va fi deployata in Heroku. O puteti accesa fie din url-ul generat in terminalul Intelij, fie din contul Heroku(browser), din butonul Open App.
 
 
 Observatii: In IntelijIdea la EditConfigurations, langa butonul Run, puteti adauga de pe plusul din partea stanga Add new COnfiguration, selectati maven, iar in partea dreapta la Command Line tastati asta: heroku:deploy-war
 Ulterior, Apply, Ok. Si daca rulati noa configuratie veti putea deploya noua versiune a aplicatiei voastre.
-Daca doriti sa adagati un addOn pentru baza de date in Heroku, selectati aplicatia voastra din Heroku, din cont, mergeti la resources, cautati dupa HerokuPostgres, selectati acest addOn, si instalati-l.
+Daca doriti sa adaugati un addOn pentru baza de date in Heroku, selectati aplicatia voastra din Heroku, din cont, mergeti la resources, cautati dupa HerokuPostgres, selectati acest addOn, si instalati-l.
 Selectati noul AddOn, mergeti la setari, iar acolo puteti selecta ViewCredentials, acestea sunt credentialele noii baze de date.
 
 Acum putem merge in Intelij si sa realizam conexiunea la noua noastra baza de date.
@@ -31,3 +31,5 @@ public UserDBManagement() {
             throwables.printStackTrace();
         }
     }
+
+Este atasat si pom.xml deoarece sunt niste dependinte si un plugin de la Heroku. Spor!

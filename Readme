@@ -1,35 +1,24 @@
-1. Accesati site-ul www.heroku.com, creati un cont
-2. Downloadati HEROKU CLI
-3. Creati o noua aplicatie in Heroku si o denumiti.
-4. In terminal-ul din Intelij Idea tastati urmatoarele comenzi:
-heroku login -i       -> Aceasta comanda va permite login-ul.
-Introduceti adresa de email si parola folosite in crearea contului de pe Heroku.
-heroku plugins:install java         -> Aceasta comanda va instala pluginul aferent limbajului de programare Java.
-heroku war:deploy <Path to your war file from the target folder and the name of the war file example at me is: C:\Users\Sorin\IdeaProjects\HEROKU_DEPLOY\target\HEROKU_DEPLOY.war> --<here you type the name of the app you created in heroku>
-Un exemplu concret a randului de mai sus este acesta(atentie la spatii si comenzi, trebuie sa fie corecte, path-ul complet si numele war-ului sa fie corect):
-heroku war:deploy C:\Users\sorin\IdeaProjects\HEROKU_DEPLOY\target\HEROKU_DEPLOY.war --app herokuappdeployed                ->hit enter
-Dupa toate acestea, aplicatia va fi deployata in Heroku. O puteti accesa fie din url-ul generat in terminalul Intelij, fie din contul Heroku(browser), din butonul Open App.
-
-
-Observatii: In IntelijIdea la EditConfigurations, langa butonul Run, puteti adauga de pe plusul din partea stanga Add new COnfiguration, selectati maven, iar in partea dreapta la Command Line tastati asta: heroku:deploy-war
-Ulterior, Apply, Ok. Si daca rulati noa configuratie veti putea deploya noua versiune a aplicatiei voastre.
-Daca doriti sa adaugati un addOn pentru baza de date in Heroku, selectati aplicatia voastra din Heroku, din cont, mergeti la resources, cautati dupa HerokuPostgres, selectati acest addOn, si instalati-l.
-Selectati noul AddOn, mergeti la setari, iar acolo puteti selecta ViewCredentials, acestea sunt credentialele noii baze de date.
-
-Acum putem merge in Intelij si sa realizam conexiunea la noua noastra baza de date.
-	Din moment ce proiectul va fi uploadat pe git, eu am optat sa setez o variabila de sistem(environment variable) DATABASE_URL cu valoare jdbc:postgresql://<YOUR DATABASE HOST>:5432/<YOUR DATABASE NAME>?user=<YOUR USER>&password=<YOUR PASSWORD>
-Aici inlocuim, cu credentialele bazei de date din HerokuPostgres. Mai jos codul cu care realizez eu conexiunea la baza de date.(Doar asa am reusit).
-public UserDBManagement() {
-        URI dbUri = null;
-        try {
-            dbUri = new URI(System.getenv("DATABASE_URL"));
-            String username = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-            connection = DriverManager.getConnection(dbUrl, username, password);
-        } catch (SQLException | URISyntaxException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
-Este atasat si pom.xml deoarece sunt niste dependinte si un plugin de la Heroku. Spor!
+1. Access https://heroku.com
+2. Create an account or log in if you alreay have one
+3. Create a new app and name it
+4. In your project`s pom.xml file add the heroku plugin and your apps name like this:
+<project>
+  ...
+  <build>
+    ...
+    <plugins>
+      <plugin>
+        <groupId>com.heroku.sdk</groupId>
+        <artifactId>heroku-maven-plugin</artifactId>
+        <version>3.0.3</version>
+	<configuration>
+  	<appName>Your apps name</appName>
+	</configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+5. Build your war file in Intelij
+6. In your project`s terminal, type:
+mvn clean heroku:deploy-war
+7. Enjoy
